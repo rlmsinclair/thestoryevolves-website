@@ -1,42 +1,96 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
+.app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(45deg, #00b4db, #0083b0, #00b4db, #0083b0);
+  background-size: 400% 400%;
+  animation: gradientAnimation 10s ease infinite;
+}
+
+.container {
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #0083b0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.input {
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #f8f8f8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-size: 1.1rem;
+  color: #333;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.button {
+  padding: 1rem 2rem;
+  background-color: #00b4db;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.button:hover {
+  background-color: #0083b0;
+}
+
+.message {
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.success {
+  color: #00b4db;
+}
+
+.error {
+  color: #f44336;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    background-position: 100% 50%;
   }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  100% {
+    background-position: 0% 50%;
   }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }
