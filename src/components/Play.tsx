@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 const Play: React.FC = () => {
   const [message, setMessage] = useState('');
+
+  const mapContainerStyle = {
+    width: '100%',
+    height: '400px'
+  };
+
+  const center = {
+    lat: 51.5074, // Latitude of London
+    lng: -0.1278  // Longitude of London
+  };
 
   return (
     <div className="play-container">
@@ -9,7 +20,15 @@ const Play: React.FC = () => {
         <button className="profile-button">Profile</button>
       </nav>
       <div className="map-container">
-        {/* Add your map component or image here */}
+        <LoadScript googleMapsApiKey="AIzaSyA3x0t8fQNXtfCh1CLzqicUkGyd4qWCm4k">
+          <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            center={center}
+            zoom={10}
+          >
+            <Marker position={center} />
+          </GoogleMap>
+        </LoadScript>
       </div>
       <div className="input-container">
         <input
