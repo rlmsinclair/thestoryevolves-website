@@ -142,3 +142,14 @@
   font-size: 1rem;
   cursor: pointer;
 }
+
+.initialize-system-turn-button {
+  background-color: #00b4db;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}

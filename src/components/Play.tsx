@@ -26,6 +26,24 @@ const Play: React.FC = () => {
     }
   };
 
+  const handleInitializeSystemTurn = async () => {
+  try {
+    const response = await axios.post(
+      'https://thestoryevolves-api-qnk39.ondigitalocean.app/api/system_turn',
+      {},
+      { withCredentials: true }
+    );
+
+    if (response.status === 200) {
+      console.log('System turn initialized successfully:', response.data.message);
+    } else {
+      console.error('Error initializing system turn:', response.status);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
   const mapContainerStyle = {
     width: '100%',
     height: '400px',
@@ -40,10 +58,13 @@ const Play: React.FC = () => {
     <div className="play-container">
       <nav className="navbar">
         <button className="profile-button">Profile</button>
+        <button className="initialize-system-turn-button" onClick={handleInitializeSystemTurn}>
+          Initialise System Turn
+        </button>
       </nav>
       <div className="map-container">
         <LoadScript googleMapsApiKey="AIzaSyA3x0t8fQNXtfCh1CLzqicUkGyd4qWCm4k">
-          <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={10}>
+        <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={10}>
             <Marker position={center} />
           </GoogleMap>
         </LoadScript>
