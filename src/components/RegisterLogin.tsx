@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const RegisterLogin: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -15,15 +16,12 @@ const RegisterLogin: React.FC = () => {
   const handleEmailSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/check_email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
-      const data = await response.json();
-      setIsRegistered(data.is_registered);
+      const response = await axios.post(
+        'https://thestoryevolves-api-qnk39.ondigitalocean.app/api/check_email',
+        { email },
+        { withCredentials: true }
+      );
+      setIsRegistered(response.data.is_registered);
       setEmailSubmitted(true);
     } catch (error) {
       console.error('Error:', error);
@@ -33,23 +31,19 @@ const RegisterLogin: React.FC = () => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await axios.post(
+        'https://thestoryevolves-api-qnk39.ondigitalocean.app/api/login',
+        { email, password },
+        { withCredentials: true }
+      );
 
-      if (response.ok) {
-        const data = await response.json();
-        setMessage(data.message);
+      if (response.status === 200) {
+        setMessage(response.data.message);
         setIsLoggedIn(true);
         navigate('/play');
       } else {
-        const data = await response.json();
-        console.error('Error:', data.message);
-        setMessage(data.message);
+        console.error('Error:', response.data.message);
+        setMessage(response.data.message);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -60,15 +54,12 @@ const RegisterLogin: React.FC = () => {
   const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name: username, email, password }),
-      });
-      const data = await response.json();
-      setMessage(data.message);
+      const response = await axios.post(
+        'https://thestoryevolves-api-qnk39.ondigitalocean.app/api/register',
+        { name: username, email, password },
+        { withCredentials: true }
+      );
+      setMessage(response.data.message);
     } catch (error) {
       console.error('Error:', error);
       setMessage('An account with this email already exists.');
@@ -88,7 +79,9 @@ const RegisterLogin: React.FC = () => {
             required
             className="input"
           />
-          <button type="submit" className="button">Submit</button>
+          <button type="submit" className="button">
+            Submit
+          </button>
         </form>
       ) : (
         <>
@@ -104,7 +97,9 @@ const RegisterLogin: React.FC = () => {
                 required
                 className="input"
               />
-              <button type="submit" className="button">Login</button>
+              <button type="submit" className="button">
+                Login
+              </button>
             </form>
           ) : (
             <form onSubmit={handleRegistration} className="form">
@@ -124,12 +119,18 @@ const RegisterLogin: React.FC = () => {
                 required
                 className="input"
               />
-              <button type="submit" className="button">Register</button>
+              <button type="submit" className="button">
+                Register
+              </button>
             </form>
           )}
         </>
       )}
-      {!isLoggedIn && message && <p className={`message ${message.includes('success') ? 'success' : 'error'}`}>{message}</p>}
+      {!isLoggedIn && message && (
+        <p className={`message ${message.includes('success') ? 'success' : 'error'}`}>
+          {message}
+        </p>
+      )}
     </div>
   );
 };
