@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import axios from 'axios';
-import { io } from 'socket.io-client';
 
 const Play: React.FC = () => {
   const [message, setMessage] = useState('');
   const [userOutput, setUserOutput] = useState('');
 
   useEffect(() => {
-    const socket = io('https://thestoryevolves-api-qnk39.ondigitalocean.app');
+    const eventSource = new EventSource('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_output_stream');
 
-    socket.on('user_output_updated', (data) => {
-      setUserOutput(data.user_output);
-    });
+    eventSource.onmessage = (event) => {
+      setUserOutput(event.data);
+    };
 
     return () => {
-      socket.disconnect();
+      eventSource.close();
     };
   }, []);
 
