@@ -7,14 +7,31 @@ const Play: React.FC = () => {
   const [userOutput, setUserOutput] = useState('');
 
   useEffect(() => {
-    const eventSource = new EventSource('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_output_stream');
+    let eventSource: EventSource | null = null;
 
-    eventSource.onmessage = (event) => {
-      setUserOutput(event.data);
+    const fetchUserOutput = async () => {
+      try {
+        const response = await axios.get(
+          'https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_output_stream',
+          { withCredentials: true }
+        );
+
+        eventSource = new EventSource(response.data.url);
+
+        eventSource.onmessage = (event) => {
+          setUserOutput(event.data);
+        };
+      } catch (error) {
+        console.error('Error:', error);
+      }
     };
 
+    fetchUserOutput();
+
     return () => {
-      eventSource.close();
+      if (eventSource) {
+        eventSource.close();
+      }
     };
   }, []);
 
