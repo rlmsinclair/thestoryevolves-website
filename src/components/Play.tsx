@@ -1,9 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import axios from 'axios';
 
 const Play: React.FC = () => {
   const [message, setMessage] = useState('');
+  const [userOutput, setUserOutput] = useState('');
+
+  useEffect(() => {
+    const fetchUserOutput = async () => {
+      try {
+        const response = await axios.get(
+          'https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_info',
+          { withCredentials: true }
+        );
+
+        if (response.status === 200) {
+          setUserOutput(response.data.user_output || '');
+        } else {
+          console.error('Error fetching user output:', response.status);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchUserOutput();
+  }, []);
 
   const handleSendMessage = async () => {
     if (message.trim() !== '') {
@@ -27,22 +49,22 @@ const Play: React.FC = () => {
   };
 
   const handleInitializeSystemTurn = async () => {
-  try {
-    const response = await axios.post(
-      'https://thestoryevolves-api-qnk39.ondigitalocean.app/api/system_turn',
-      {},
-      { withCredentials: true }
-    );
+    try {
+      const response = await axios.post(
+        'https://thestoryevolves-api-qnk39.ondigitalocean.app/api/system_turn',
+        {},
+        { withCredentials: true }
+      );
 
-    if (response.status === 200) {
-      console.log('System turn initialized successfully:', response.data.message);
-    } else {
-      console.error('Error initializing system turn:', response.status);
+      if (response.status === 200) {
+        console.log('System turn initialized successfully:', response.data.message);
+      } else {
+        console.error('Error initializing system turn:', response.status);
+      }
+    } catch (error) {
+      console.error('Error:', error);
     }
-  } catch (error) {
-    console.error('Error:', error);
-  }
-};
+  };
 
   const mapContainerStyle = {
     width: '100%',
@@ -64,10 +86,13 @@ const Play: React.FC = () => {
       </nav>
       <div className="map-container">
         <LoadScript googleMapsApiKey="AIzaSyA3x0t8fQNXtfCh1CLzqicUkGyd4qWCm4k">
-        <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={10}>
+          <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={10}>
             <Marker position={center} />
           </GoogleMap>
         </LoadScript>
+      </div>
+      <div className="output-container">
+        <p className="user-output">{userOutput}</p>
       </div>
       <div className="input-container">
         <input
