@@ -1,30 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import axios from 'axios';
+import { io } from 'socket.io-client';
 
 const Play: React.FC = () => {
   const [message, setMessage] = useState('');
   const [userOutput, setUserOutput] = useState('');
 
   useEffect(() => {
-    const fetchUserOutput = async () => {
-      try {
-        const response = await axios.get(
-          'https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_info',
-          { withCredentials: true }
-        );
+    const socket = io('https://thestoryevolves-api-qnk39.ondigitalocean.app');
 
-        if (response.status === 200) {
-          setUserOutput(response.data.user_output || '');
-        } else {
-          console.error('Error fetching user output:', response.status);
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
+    socket.on('user_output_updated', (data) => {
+      setUserOutput(data.user_output);
+    });
+
+    return () => {
+      socket.disconnect();
     };
-
-    fetchUserOutput();
   }, []);
 
   const handleSendMessage = async () => {
