@@ -7,20 +7,25 @@ const Play: React.FC = () => {
   const [userOutput, setUserOutput] = useState('');
 
   useEffect(() => {
-    const eventSource = new EventSource('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_output_stream');
+    const fetchUserOutput = async () => {
+      try {
+        const response = await axios.get(
+          'https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_output',
+          { withCredentials: true }
+        );
 
-    eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      setUserOutput(data.user_output);
+        if (response.status === 200) {
+          setUserOutput(response.data.user_output);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+
+      // Schedule the next fetch after a delay
+      setTimeout(fetchUserOutput, 1000);
     };
 
-    eventSource.onerror = (error) => {
-      console.error('EventSource error:', error);
-    };
-
-    return () => {
-      eventSource.close();
-    };
+    fetchUserOutput();
   }, []);
 
   const handleSendMessage = async () => {
