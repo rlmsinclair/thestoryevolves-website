@@ -52,19 +52,20 @@ const RegisterLogin: React.FC = () => {
   };
 
   const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        'https://thestoryevolves-api-qnk39.ondigitalocean.app/api/register',
-        { name: username, email, password },
-        { withCredentials: true }
-      );
-      setMessage(response.data.message);
-    } catch (error) {
-      console.error('Error:', error);
-      setMessage('An account with this email already exists.');
-    }
-  };
+  e.preventDefault();
+  try {
+    const response = await axios.post(
+      'https://thestoryevolves-api-qnk39.ondigitalocean.app/api/register',
+      { name: username, email, password },
+      { withCredentials: true }
+    );
+    setMessage(response.data.message);
+    navigate('/play'); // Redirect to the play page after successful registration
+  } catch (error) {
+    console.error('Error:', error);
+    setMessage('An account with this email already exists.');
+  }
+};
 
   return (
     <div className="container">
