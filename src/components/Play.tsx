@@ -2,32 +2,44 @@ import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import axios from 'axios';
 
+interface UserLocation {
+  id: number;
+  username: string;
+  lat: number;
+  lng: number;
+}
+
 const Play: React.FC = () => {
   const [message, setMessage] = useState('');
   const [userOutput, setUserOutput] = useState('');
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [allUserLocations, setAllUserLocations] = useState<UserLocation[]>([]);
 
   useEffect(() => {
-    const fetchUserOutput = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(
-          'https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_output',
-          { withCredentials: true }
-        );
+        const [outputResponse, locationsResponse] = await Promise.all([
+          axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_output', { withCredentials: true }),
+          axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/all_user_locations', { withCredentials: true })
+        ]);
 
-        if (response.status === 200) {
-          setUserOutput(response.data.user_output);
-          setUserLocation({ lat: response.data.lat, lng: response.data.lng });
+        if (outputResponse.status === 200) {
+          setUserOutput(outputResponse.data.user_output);
+          setUserLocation({ lat: outputResponse.data.lat, lng: outputResponse.data.lng });
+        }
+
+        if (locationsResponse.status === 200) {
+          setAllUserLocations(locationsResponse.data);
         }
       } catch (error) {
         console.error('Error:', error);
       }
 
       // Schedule the next fetch after a delay
-      setTimeout(fetchUserOutput, 1000);
+      setTimeout(fetchData, 5000); // Fetch every 5 seconds
     };
 
-    fetchUserOutput();
+    fetchData();
   }, []);
 
   const handleSendMessage = async () => {
@@ -94,7 +106,13 @@ const Play: React.FC = () => {
             center={userLocation || defaultCenter}
             zoom={10}
           >
-            {userLocation && <Marker position={userLocation} />}
+            {allUserLocations.map((user) => (
+              <Marker
+                key={user.id}
+                position={{ lat: user.lat, lng: user.lng }}
+                title={user.username}
+              />
+            ))}
           </GoogleMap>
         </LoadScript>
       </div>
