@@ -19,18 +19,25 @@ const Play: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [outputResponse, locationsResponse, userInfoResponse] = await Promise.all([
-          axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_output', { withCredentials: true }),
+        const [locationsResponse, userInfoResponse] = await Promise.all([
           axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/all_user_locations', { withCredentials: true }),
           axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_info', { withCredentials: true })
         ]);
 
-        if (outputResponse.status === 200) {
-          setUserLocation({ lat: outputResponse.data.lat, lng: outputResponse.data.lng });
-        }
-
         if (locationsResponse.status === 200) {
           setAllUserLocations(locationsResponse.data);
+          console.log('All User Locations:', locationsResponse.data);
+
+          // Find the current user's location
+          const currentUserLocation = locationsResponse.data.find(
+            (user: UserLocation) => user.username === currentUser
+          );
+          if (currentUserLocation) {
+            setUserLocation({
+              lat: currentUserLocation.lat,
+              lng: currentUserLocation.lng,
+            });
+          }
         }
 
         if (userInfoResponse.status === 200) {
@@ -45,7 +52,7 @@ const Play: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, [currentUser]);
 
   const handleSendMessage = async () => {
     if (message.trim() !== '') {
@@ -124,7 +131,7 @@ const Play: React.FC = () => {
       <div className="output-container">
         {allUserLocations.map((user) => (
           <div key={user.id} className={`user-output ${user.username === currentUser ? 'current-user' : ''}`}>
-            <strong>{user.username}:</strong> {user.user_output}
+            <strong>{user.username}:</strong> {user.user_output && <span>{user.user_output}</span>}
           </div>
         ))}
       </div>
