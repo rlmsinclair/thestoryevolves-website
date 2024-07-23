@@ -5,6 +5,7 @@ import axios from 'axios';
 const Play: React.FC = () => {
   const [message, setMessage] = useState('');
   const [userOutput, setUserOutput] = useState('');
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
 
   useEffect(() => {
     const fetchUserOutput = async () => {
@@ -16,6 +17,7 @@ const Play: React.FC = () => {
 
         if (response.status === 200) {
           setUserOutput(response.data.user_output);
+          setUserLocation({ lat: response.data.lat, lng: response.data.lng });
         }
       } catch (error) {
         console.error('Error:', error);
@@ -72,7 +74,7 @@ const Play: React.FC = () => {
     height: '400px',
   };
 
-  const center = {
+  const defaultCenter = {
     lat: 51.5074,
     lng: -0.1278,
   };
@@ -87,8 +89,12 @@ const Play: React.FC = () => {
       </nav>
       <div className="map-container">
         <LoadScript googleMapsApiKey="AIzaSyA3x0t8fQNXtfCh1CLzqicUkGyd4qWCm4k">
-          <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={10}>
-            <Marker position={center} />
+          <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            center={userLocation || defaultCenter}
+            zoom={10}
+          >
+            {userLocation && <Marker position={userLocation} />}
           </GoogleMap>
         </LoadScript>
       </div>
