@@ -21,14 +21,13 @@ const Play: React.FC = () => {
       try {
         const [locationsResponse, userInfoResponse] = await Promise.all([
           axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/all_user_locations', { withCredentials: true }),
-          axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_info', { withCredentials: true })
+          axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_info', { withCredentials: true }),
         ]);
 
         if (locationsResponse.status === 200) {
           setAllUserLocations(locationsResponse.data);
           console.log('All User Locations:', locationsResponse.data);
 
-          // Find the current user's location
           const currentUserLocation = locationsResponse.data.find(
             (user: UserLocation) => user.username === currentUser
           );
@@ -47,8 +46,7 @@ const Play: React.FC = () => {
         console.error('Error:', error);
       }
 
-      // Schedule the next fetch after a delay
-      setTimeout(fetchData, 5000); // Fetch every 5 seconds
+      setTimeout(fetchData, 5000);
     };
 
     fetchData();
@@ -95,7 +93,7 @@ const Play: React.FC = () => {
 
   const mapContainerStyle = {
     width: '100%',
-    height: '400px',
+    height: '100%',
   };
 
   const defaultCenter = {
@@ -111,29 +109,31 @@ const Play: React.FC = () => {
           Initialise System Turn
         </button>
       </nav>
-      <div className="map-container">
-        <LoadScript googleMapsApiKey="AIzaSyA3x0t8fQNXtfCh1CLzqicUkGyd4qWCm4k">
-          <GoogleMap
-            mapContainerStyle={mapContainerStyle}
-            center={userLocation || defaultCenter}
-            zoom={10}
-          >
-            {allUserLocations.map((user) => (
-              <Marker
-                key={user.id}
-                position={{ lat: user.lat, lng: user.lng }}
-                title={user.username}
-              />
-            ))}
-          </GoogleMap>
-        </LoadScript>
-      </div>
-      <div className="output-container">
-        {allUserLocations.map((user) => (
-          <div key={user.id} className={`user-output ${user.username === currentUser ? 'current-user' : ''}`}>
-            <strong>{user.username}:</strong> {user.user_output && <span>{user.user_output}</span>}
-          </div>
-        ))}
+      <div className="content-container">
+        <div className="map-container">
+          <LoadScript googleMapsApiKey="AIzaSyA3x0t8fQNXtfCh1CLzqicUkGyd4qWCm4k">
+            <GoogleMap
+              mapContainerStyle={mapContainerStyle}
+              center={userLocation || defaultCenter}
+              zoom={10}
+            >
+              {allUserLocations.map((user) => (
+                <Marker
+                  key={user.id}
+                  position={{ lat: user.lat, lng: user.lng }}
+                  title={user.username}
+                />
+              ))}
+            </GoogleMap>
+          </LoadScript>
+        </div>
+        <div className="output-container">
+          {allUserLocations.map((user) => (
+            <div key={user.id} className={`user-output ${user.username === currentUser ? 'current-user' : ''}`}>
+              <strong>{user.username}:</strong> {user.user_output && <span>{user.user_output}</span>}
+            </div>
+          ))}
+        </div>
       </div>
       <div className="input-container">
         <input
