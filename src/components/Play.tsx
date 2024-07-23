@@ -7,29 +7,34 @@ interface UserLocation {
   username: string;
   lat: number;
   lng: number;
+  user_output: string;
 }
 
 const Play: React.FC = () => {
   const [message, setMessage] = useState('');
-  const [userOutput, setUserOutput] = useState('');
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [allUserLocations, setAllUserLocations] = useState<UserLocation[]>([]);
+  const [currentUser, setCurrentUser] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [outputResponse, locationsResponse] = await Promise.all([
+        const [outputResponse, locationsResponse, userInfoResponse] = await Promise.all([
           axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_output', { withCredentials: true }),
-          axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/all_user_locations', { withCredentials: true })
+          axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/all_user_locations', { withCredentials: true }),
+          axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_info', { withCredentials: true })
         ]);
 
         if (outputResponse.status === 200) {
-          setUserOutput(outputResponse.data.user_output);
           setUserLocation({ lat: outputResponse.data.lat, lng: outputResponse.data.lng });
         }
 
         if (locationsResponse.status === 200) {
           setAllUserLocations(locationsResponse.data);
+        }
+
+        if (userInfoResponse.status === 200) {
+          setCurrentUser(userInfoResponse.data.username);
         }
       } catch (error) {
         console.error('Error:', error);
@@ -117,7 +122,11 @@ const Play: React.FC = () => {
         </LoadScript>
       </div>
       <div className="output-container">
-        <p className="user-output">{userOutput}</p>
+        {allUserLocations.map((user) => (
+          <div key={user.id} className={`user-output ${user.username === currentUser ? 'current-user' : ''}`}>
+            <strong>{user.username}:</strong> {user.user_output}
+          </div>
+        ))}
       </div>
       <div className="input-container">
         <input
