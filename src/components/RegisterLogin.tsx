@@ -150,6 +150,7 @@ const RegisterLogin: React.FC = () => {
           {message}
         </p>
       )}
+      <p className="claw-warning">Watch out for... The Claw</p>
     </div>
   );
 };
