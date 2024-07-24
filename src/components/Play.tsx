@@ -20,10 +20,10 @@ const Play: React.FC = () => {
     const fetchData = async () => {
       try {
         const [locationsResponse, userInfoResponse] = await Promise.all([
-          axios.get('https://api.thestoryevolves.com/api/all_user_locations', {
+          axios.get('https://api1.thestoryevolves.com/api/all_user_locations', {
             withCredentials: true,
           }),
-          axios.get('https://api.thestoryevolves.com/api/user_info', {
+          axios.get('https://api1.thestoryevolves.com/api/user_info', {
             withCredentials: true,
           }),
         ]);
@@ -65,7 +65,7 @@ const Play: React.FC = () => {
     if (message.trim() !== '') {
       try {
         const response = await axios.post(
-          'https://api.thestoryevolves.com/api/user_turn',
+          'https://api1.thestoryevolves.com/api/user_turn',
           { user_input: message },
           { withCredentials: true }
         );
@@ -91,7 +91,7 @@ const Play: React.FC = () => {
   const handleInitializeSystemTurn = async () => {
     try {
       const response = await axios.post(
-        'https://api.thestoryevolves.com/api/system_turn',
+        'https://api1.thestoryevolves.com/api/system_turn',
         {},
         { withCredentials: true }
       );
