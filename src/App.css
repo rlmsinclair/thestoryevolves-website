@@ -200,7 +200,14 @@ body {
 }
 
 @media screen and (max-width: 768px) {
+  .play-container {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    height: 100vh;
+  }
+
   .navbar {
+    grid-row: 1;
     flex-direction: row;
     justify-content: space-between;
     padding: 8px 12px;
@@ -213,20 +220,16 @@ body {
   }
 
   .map-container {
+    grid-row: 2;
     height: 40vh;
   }
 
-  .output-container {
-    font-size: 12px;
-  }
-
-  .user-output {
-    margin-bottom: 6px;
-    padding: 4px;
-  }
-
   .input-container {
+    grid-row: 3;
+    flex-direction: row;
     padding: 8px;
+    box-shadow: none;
+    background-color: transparent;
   }
 
   .message-input {
@@ -237,5 +240,16 @@ body {
   .send-button {
     font-size: 12px;
     padding: 6px 12px;
+  }
+
+  .output-container {
+    grid-row: 4;
+    font-size: 12px;
+    max-height: calc(100vh - 40vh - 100px); /* Adjust based on other element heights */
+  }
+
+  .user-output {
+    margin-bottom: 6px;
+    padding: 4px;
   }
 }
