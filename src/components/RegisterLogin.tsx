@@ -17,7 +17,7 @@ const RegisterLogin: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'https://thestoryevolves-api-qnk39.ondigitalocean.app/api/check_email',
+        'https://api.thestoryevolves.com/api/check_email',
         { email },
         { withCredentials: true }
       );
@@ -32,7 +32,7 @@ const RegisterLogin: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'https://thestoryevolves-api-qnk39.ondigitalocean.app/api/login',
+        'https://api.thestoryevolves.com/api/login',
         { email, password },
         { withCredentials: true }
       );
@@ -55,7 +55,7 @@ const RegisterLogin: React.FC = () => {
   e.preventDefault();
   try {
     const response = await axios.post(
-      'https://thestoryevolves-api-qnk39.ondigitalocean.app/api/register',
+      'https://api.thestoryevolves.com/api/register',
       { name: username, email, password },
       { withCredentials: true }
     );
