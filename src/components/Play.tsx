@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, KeyboardEvent } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import axios from 'axios';
 
 interface UserLocation {
   id: number;
@@ -19,21 +20,20 @@ const Play: React.FC = () => {
     const fetchData = async () => {
       try {
         const [locationsResponse, userInfoResponse] = await Promise.all([
-          fetch('https://api.thestoryevolves.com/api/all_user_locations', {
-            credentials: 'include',
+          axios.get('https://api.thestoryevolves.com/api/all_user_locations', {
+            withCredentials: true,
           }),
-          fetch('https://api.thestoryevolves.com/api/user_info', {
-            credentials: 'include',
+          axios.get('https://api.thestoryevolves.com/api/user_info', {
+            withCredentials: true,
           }),
         ]);
 
-        if (locationsResponse.ok) {
-          const locationsData = await locationsResponse.json();
-          setAllUserLocations(locationsData);
-          console.log('All User Locations:', locationsData);
+        if (locationsResponse.status === 200) {
+          setAllUserLocations(locationsResponse.data);
+          console.log('All User Locations:', locationsResponse.data);
 
           // Find the current user's location
-          const currentUserLocation = locationsData.find(
+          const currentUserLocation = locationsResponse.data.find(
             (user: UserLocation) => user.username === currentUser
           );
           if (currentUserLocation) {
@@ -44,9 +44,8 @@ const Play: React.FC = () => {
           }
         }
 
-        if (userInfoResponse.ok) {
-          const userInfoData = await userInfoResponse.json();
-          setCurrentUser(userInfoData.username);
+        if (userInfoResponse.status === 200) {
+          setCurrentUser(userInfoResponse.data.username);
         }
       } catch (error) {
         console.error('Error:', error);
@@ -65,18 +64,14 @@ const Play: React.FC = () => {
   const handleSendMessage = async () => {
     if (message.trim() !== '') {
       try {
-        const response = await fetch('https://api.thestoryevolves.com/api/user_turn', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ user_input: message }),
-          credentials: 'include',
-        });
+        const response = await axios.post(
+          'https://api.thestoryevolves.com/api/user_turn',
+          { user_input: message },
+          { withCredentials: true }
+        );
 
-        if (response.ok) {
-          const data = await response.json();
-          console.log('User input stored successfully:', data.message);
+        if (response.status === 200) {
+          console.log('User input stored successfully:', response.data.message);
           setMessage('');
         } else {
           console.error('Error storing user input:', response.status);
@@ -87,16 +82,22 @@ const Play: React.FC = () => {
     }
   };
 
+  const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+
   const handleInitializeSystemTurn = async () => {
     try {
-      const response = await fetch('https://api.thestoryevolves.com/api/system_turn', {
-        method: 'POST',
-        credentials: 'include',
-      });
+      const response = await axios.post(
+        'https://api.thestoryevolves.com/api/system_turn',
+        {},
+        { withCredentials: true }
+      );
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log('System turn initialized successfully:', data.message);
+      if (response.status === 200) {
+        console.log('System turn initialized successfully:', response.data.message);
       } else {
         console.error('Error initializing system turn:', response.status);
       }
@@ -153,6 +154,7 @@ const Play: React.FC = () => {
           placeholder="Type your message..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyPress={handleKeyPress}
           className="message-input"
         />
         <button className="send-button" onClick={handleSendMessage}>
