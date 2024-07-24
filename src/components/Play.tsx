@@ -23,13 +23,13 @@ const Play: React.FC = () => {
           axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/all_user_locations', {
             withCredentials: true,
             headers: {
-              'Access-Control-Allow-Origin': 'https://thestoryevolves.com/play',
+              'Access-Control-Allow-Origin': 'https://thestoryevolves.com',
             },
           }),
           axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_info', {
             withCredentials: true,
             headers: {
-              'Access-Control-Allow-Origin': 'https://thestoryevolves.com/play',
+              'Access-Control-Allow-Origin': 'https://thestoryevolves.com',
             },
           }),
         ]);
@@ -56,12 +56,15 @@ const Play: React.FC = () => {
       } catch (error) {
         console.error('Error:', error);
       }
-
-      // Schedule the next fetch after a delay
-      setTimeout(fetchData, 5000); // Fetch every 5 seconds
     };
 
     fetchData();
+
+    const intervalId = setInterval(fetchData, 2000); // Fetch every 2 seconds
+
+    return () => {
+      clearInterval(intervalId); // Clean up the interval on component unmount
+    };
   }, [currentUser]);
 
   const handleSendMessage = async () => {
