@@ -20,8 +20,18 @@ const Play: React.FC = () => {
     const fetchData = async () => {
       try {
         const [locationsResponse, userInfoResponse] = await Promise.all([
-          axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/all_user_locations', { withCredentials: true }),
-          axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_info', { withCredentials: true })
+          axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/all_user_locations', {
+            withCredentials: true,
+            headers: {
+              'Access-Control-Allow-Origin': 'https://your-frontend-url.com',
+            },
+          }),
+          axios.get('https://thestoryevolves-api-qnk39.ondigitalocean.app/api/user_info', {
+            withCredentials: true,
+            headers: {
+              'Access-Control-Allow-Origin': 'https://your-frontend-url.com',
+            },
+          }),
         ]);
 
         if (locationsResponse.status === 200) {
