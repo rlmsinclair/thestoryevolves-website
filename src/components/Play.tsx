@@ -19,10 +19,10 @@ const Play: React.FC = () => {
     const fetchData = async () => {
       try {
         const [locationsResponse, userInfoResponse] = await Promise.all([
-          fetch('https://api.thestoryevolves.com/api/all_user_locations/', {
+          fetch('https://api.thestoryevolves.com/api/all_user_locations', {
             credentials: 'include',
           }),
-          fetch('https://api.thestoryevolves.com/api/user_info/', {
+          fetch('https://api.thestoryevolves.com/api/user_info', {
             credentials: 'include',
           }),
         ]);
@@ -65,7 +65,7 @@ const Play: React.FC = () => {
   const handleSendMessage = async () => {
     if (message.trim() !== '') {
       try {
-        const response = await fetch('https://api.thestoryevolves.com/api/user_turn/', {
+        const response = await fetch('https://api.thestoryevolves.com/api/user_turn', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ const Play: React.FC = () => {
 
   const handleInitializeSystemTurn = async () => {
     try {
-      const response = await fetch('https://api.thestoryevolves.com/api/system_turn/', {
+      const response = await fetch('https://api.thestoryevolves.com/api/system_turn', {
         method: 'POST',
         credentials: 'include',
       });

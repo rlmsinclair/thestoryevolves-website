@@ -15,7 +15,7 @@ const RegisterLogin: React.FC = () => {
   const handleEmailSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://api.thestoryevolves.com/api/check_email/', {
+      const response = await fetch('https://api.thestoryevolves.com/api/check_email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ const RegisterLogin: React.FC = () => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://api.thestoryevolves.com/api/login/', {
+      const response = await fetch('https://api.thestoryevolves.com/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const RegisterLogin: React.FC = () => {
   const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://api.thestoryevolves.com/api/register/', {
+      const response = await fetch('https://api.thestoryevolves.com/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
