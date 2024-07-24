@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import axios from 'axios';
 
 interface UserLocation {
   id: number;
@@ -19,21 +18,22 @@ const Play: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-      const [locationsResponse, userInfoResponse] = await Promise.all([
-        axios.get('https://api.thestoryevolves.com/api/all_user_locations', {
-          withCredentials: true,
-        }),
-        axios.get('https://api.thestoryevolves.com/api/user_info', {
-          withCredentials: true,
-        }),
-      ]);
+        const [locationsResponse, userInfoResponse] = await Promise.all([
+          fetch('https://api.thestoryevolves.com/api/all_user_locations', {
+            credentials: 'include',
+          }),
+          fetch('https://api.thestoryevolves.com/api/user_info', {
+            credentials: 'include',
+          }),
+        ]);
 
-        if (locationsResponse.status === 200) {
-          setAllUserLocations(locationsResponse.data);
-          console.log('All User Locations:', locationsResponse.data);
+        if (locationsResponse.ok) {
+          const locationsData = await locationsResponse.json();
+          setAllUserLocations(locationsData);
+          console.log('All User Locations:', locationsData);
 
           // Find the current user's location
-          const currentUserLocation = locationsResponse.data.find(
+          const currentUserLocation = locationsData.find(
             (user: UserLocation) => user.username === currentUser
           );
           if (currentUserLocation) {
@@ -44,8 +44,9 @@ const Play: React.FC = () => {
           }
         }
 
-        if (userInfoResponse.status === 200) {
-          setCurrentUser(userInfoResponse.data.username);
+        if (userInfoResponse.ok) {
+          const userInfoData = await userInfoResponse.json();
+          setCurrentUser(userInfoData.username);
         }
       } catch (error) {
         console.error('Error:', error);
@@ -64,14 +65,18 @@ const Play: React.FC = () => {
   const handleSendMessage = async () => {
     if (message.trim() !== '') {
       try {
-        const response = await axios.post(
-          'https://api.thestoryevolves.com/api/user_turn',
-          { user_input: message },
-          { withCredentials: true }
-        );
+        const response = await fetch('https://api.thestoryevolves.com/api/user_turn', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ user_input: message }),
+          credentials: 'include',
+        });
 
-        if (response.status === 200) {
-          console.log('User input stored successfully:', response.data.message);
+        if (response.ok) {
+          const data = await response.json();
+          console.log('User input stored successfully:', data.message);
           setMessage('');
         } else {
           console.error('Error storing user input:', response.status);
@@ -84,14 +89,14 @@ const Play: React.FC = () => {
 
   const handleInitializeSystemTurn = async () => {
     try {
-      const response = await axios.post(
-        'https://api.thestoryevolves.com/api/system_turn',
-        {},
-        { withCredentials: true }
-      );
+      const response = await fetch('https://api.thestoryevolves.com/api/system_turn', {
+        method: 'POST',
+        credentials: 'include',
+      });
 
-      if (response.status === 200) {
-        console.log('System turn initialized successfully:', response.data.message);
+      if (response.ok) {
+        const data = await response.json();
+        console.log('System turn initialized successfully:', data.message);
       } else {
         console.error('Error initializing system turn:', response.status);
       }

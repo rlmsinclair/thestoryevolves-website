@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 const RegisterLogin: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -16,12 +15,16 @@ const RegisterLogin: React.FC = () => {
   const handleEmailSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        'https://api.thestoryevolves.com/api/check_email',
-        { email },
-        { withCredentials: true }
-      );
-      setIsRegistered(response.data.is_registered);
+      const response = await fetch('https://api.thestoryevolves.com/api/check_email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+        credentials: 'include',
+      });
+      const data = await response.json();
+      setIsRegistered(data.is_registered);
       setEmailSubmitted(true);
     } catch (error) {
       console.error('Error:', error);
@@ -31,19 +34,24 @@ const RegisterLogin: React.FC = () => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        'https://api.thestoryevolves.com/api/login',
-        { email, password },
-        { withCredentials: true }
-      );
+      const response = await fetch('https://api.thestoryevolves.com/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+        credentials: 'include',
+      });
 
-      if (response.status === 200) {
-        setMessage(response.data.message);
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage(data.message);
         setIsLoggedIn(true);
         navigate('/play');
       } else {
-        console.error('Error:', response.data.message);
-        setMessage(response.data.message);
+        console.error('Error:', data.message);
+        setMessage(data.message);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -52,20 +60,30 @@ const RegisterLogin: React.FC = () => {
   };
 
   const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  try {
-    const response = await axios.post(
-      'https://api.thestoryevolves.com/api/register',
-      { name: username, email, password },
-      { withCredentials: true }
-    );
-    setMessage(response.data.message);
-    navigate('/play'); // Redirect to the play page after successful registration
-  } catch (error) {
-    console.error('Error:', error);
-    setMessage('An account with this email already exists.');
-  }
-};
+    e.preventDefault();
+    try {
+      const response = await fetch('https://api.thestoryevolves.com/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: username, email, password }),
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage(data.message);
+        navigate('/play');
+      } else {
+        setMessage('An account with this email already exists.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setMessage('An error occurred. Please try again.');
+    }
+  };
 
   return (
     <div className="container">
