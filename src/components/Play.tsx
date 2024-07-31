@@ -132,7 +132,7 @@ const Play: React.FC = () => {
     <div className="play-container">
       <nav className="navbar">
         <button className="profile-button">Profile</button>
-        {userInfo?.is_storymaster && (
+        {userInfo && userInfo.is_storymaster && (
           <button className="initialize-system-turn-button" onClick={handleInitializeSystemTurn}>
             Initialize System Turn
           </button>
