@@ -1,5 +1,3 @@
-// Play.tsx
-
 import React, { useState, useEffect, KeyboardEvent } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import axios from 'axios';
@@ -17,7 +15,6 @@ const Play: React.FC = () => {
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [allUserLocations, setAllUserLocations] = useState<UserLocation[]>([]);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
-  const [isStorymaster, setIsStorymaster] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,7 +46,6 @@ const Play: React.FC = () => {
 
         if (userInfoResponse.status === 200) {
           setCurrentUser(userInfoResponse.data.username);
-          setIsStorymaster(userInfoResponse.data.is_storymaster);
         }
       } catch (error) {
         console.error('Error:', error);
@@ -124,11 +120,9 @@ const Play: React.FC = () => {
     <div className="play-container">
       <nav className="navbar">
         <button className="profile-button">Profile</button>
-        {isStorymaster && (
-          <button className="initialize-system-turn-button" onClick={handleInitializeSystemTurn}>
-            Initialize System Turn
-          </button>
-        )}
+        <button className="initialize-system-turn-button" onClick={handleInitializeSystemTurn}>
+          Initialise System Turn
+        </button>
       </nav>
       <div className="map-container">
         <LoadScript googleMapsApiKey="AIzaSyA3x0t8fQNXtfCh1CLzqicUkGyd4qWCm4k">
