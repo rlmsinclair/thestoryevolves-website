@@ -8,6 +8,7 @@ const Lobby: React.FC = () => {
   const [isCreatingStory, setIsCreatingStory] = useState(false);
   const [isJoiningStory, setIsJoiningStory] = useState(false);
   const [storyName, setStoryName] = useState('');
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   const handleCreateStory = async () => {
@@ -27,15 +28,16 @@ const Lobby: React.FC = () => {
     try {
       if (isCreatingStory) {
         await axios.post('https://api1.thestoryevolves.com/api/update_story_name', { story_name: storyName }, { withCredentials: true });
+        navigate('/play');
       } else if (isJoiningStory) {
         const response = await axios.post('https://api1.thestoryevolves.com/api/check_story_name', { story_name: storyName }, { withCredentials: true });
         if (response.data.exists) {
           await axios.post('https://api1.thestoryevolves.com/api/update_story_name', { story_name: storyName }, { withCredentials: true });
+          navigate('/play');
         } else {
-          console.log('Story not found');
+          setMessage('Invalid story name. Please enter a valid story name.');
         }
       }
-      navigate('/play');
     } catch (error) {
       console.error('Error:', error);
     }
@@ -56,6 +58,7 @@ const Lobby: React.FC = () => {
           <button onClick={handleStoryNameSubmit}>Submit</button>
         </>
       )}
+      {message && <p>{message}</p>}
     </div>
   );
 };
