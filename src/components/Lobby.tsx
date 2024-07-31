@@ -1,6 +1,6 @@
 // Lobby.tsx
 
-import React, { useState } from 'react';
+import React, {KeyboardEvent, useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +10,12 @@ const Lobby: React.FC = () => {
   const [storyName, setStoryName] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+
+  const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleStoryNameSubmit();
+    }
+  };
 
   const handleCreateStory = async () => {
     try {
@@ -54,7 +60,7 @@ const Lobby: React.FC = () => {
       )}
       {(isCreatingStory || isJoiningStory) && (
         <>
-          <input type="text" value={storyName} onChange={(e) => setStoryName(e.target.value)} placeholder="Enter story name" />
+          <input type="text" value={storyName} onKeyPress={handleKeyPress} onChange={(e) => setStoryName(e.target.value)} placeholder="Enter story name" />
           <button onClick={handleStoryNameSubmit}>Submit</button>
         </>
       )}
