@@ -156,8 +156,11 @@ body {
 }
 
 .current-user {
+  margin-bottom: 8px;
+  padding: 6px;
+  border-radius: var(--border-radius);
   background-color: #e8f5e9;
-  color: var(--secondary-color);
+  color: var(--primary-color);
 }
 
 .input-container {
