@@ -1,3 +1,5 @@
+// Play.tsx
+
 import React, { useState, useEffect, KeyboardEvent } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import axios from 'axios';
@@ -10,11 +12,20 @@ interface UserLocation {
   user_output: string;
 }
 
+interface UserInfo {
+  email: string;
+  username: string;
+  user_output: string;
+  is_storymaster: boolean;
+  story_name: string;
+}
+
 const Play: React.FC = () => {
   const [message, setMessage] = useState('');
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [allUserLocations, setAllUserLocations] = useState<UserLocation[]>([]);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,6 +57,7 @@ const Play: React.FC = () => {
 
         if (userInfoResponse.status === 200) {
           setCurrentUser(userInfoResponse.data.username);
+          setUserInfo(userInfoResponse.data);
         }
       } catch (error) {
         console.error('Error:', error);
@@ -120,9 +132,11 @@ const Play: React.FC = () => {
     <div className="play-container">
       <nav className="navbar">
         <button className="profile-button">Profile</button>
-        <button className="initialize-system-turn-button" onClick={handleInitializeSystemTurn}>
-          Initialise System Turn
-        </button>
+        {userInfo?.is_storymaster && (
+          <button className="initialize-system-turn-button" onClick={handleInitializeSystemTurn}>
+            Initialize System Turn
+          </button>
+        )}
       </nav>
       <div className="map-container">
         <LoadScript googleMapsApiKey="AIzaSyA3x0t8fQNXtfCh1CLzqicUkGyd4qWCm4k">
