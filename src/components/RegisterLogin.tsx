@@ -1,3 +1,5 @@
+// RegisterLogin.tsx
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -48,7 +50,7 @@ const RegisterLogin: React.FC = () => {
       if (response.ok) {
         setMessage(data.message);
         setIsLoggedIn(true);
-        navigate('/play');
+        navigate('/lobby'); // Redirect to lobby after successful login
       } else {
         console.error('Error:', data.message);
         setMessage(data.message);
@@ -75,7 +77,7 @@ const RegisterLogin: React.FC = () => {
 
       if (response.ok) {
         setMessage(data.message);
-        navigate('/play');
+        navigate('/lobby'); // Redirect to lobby after successful registration
       } else {
         setMessage('An account with this email already exists.');
       }
