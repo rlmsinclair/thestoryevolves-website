@@ -97,9 +97,9 @@ body {
 
 .play-container {
   display: flex;
-  width: 100vw;
+  width: 100dvw;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -204,7 +204,7 @@ body {
   .play-container {
     display: grid;
     grid-template-rows: auto auto 1fr auto;
-    height: 100vh;
+    height: 100dvh;
   }
 
   .navbar {
