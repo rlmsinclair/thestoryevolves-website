@@ -18,7 +18,6 @@ const Play: React.FC = () => {
   const [allUserLocations, setAllUserLocations] = useState<UserLocation[]>([]);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
   const [isStorymaster, setIsStorymaster] = useState(false);
-  const [storyName, setStoryName] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,7 +50,6 @@ const Play: React.FC = () => {
         if (userInfoResponse.status === 200) {
           setCurrentUser(userInfoResponse.data.username);
           setIsStorymaster(userInfoResponse.data.is_storymaster);
-          setStoryName(userInfoResponse.data.story_name);
         }
       } catch (error) {
         console.error('Error:', error);
