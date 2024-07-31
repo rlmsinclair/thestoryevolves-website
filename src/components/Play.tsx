@@ -3,6 +3,7 @@
 import React, { useState, useEffect, KeyboardEvent } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface UserLocation {
   id: number;
@@ -26,6 +27,8 @@ const Play: React.FC = () => {
   const [allUserLocations, setAllUserLocations] = useState<UserLocation[]>([]);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,6 +121,10 @@ const Play: React.FC = () => {
     }
   };
 
+  const handleProfileClick = () => {
+    navigate('/profile');
+  };
+
   const mapContainerStyle = {
     width: '100%',
     height: '400px',
@@ -131,8 +138,10 @@ const Play: React.FC = () => {
   return (
     <div className="play-container">
       <nav className="navbar">
-        <button className="profile-button">Profile</button>
-        {!!userInfo?.is_storymaster && (
+        <button className="profile-button" onClick={handleProfileClick}>
+          Profile
+        </button>
+        {userInfo && userInfo.is_storymaster && (
           <button className="initialize-system-turn-button" onClick={handleInitializeSystemTurn}>
             Initialize System Turn
           </button>
