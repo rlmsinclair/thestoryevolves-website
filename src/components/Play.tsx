@@ -141,7 +141,7 @@ const Play: React.FC = () => {
         <button className="profile-button" onClick={handleProfileClick}>
           Profile
         </button>
-        {userInfo && userInfo.is_storymaster && (
+        {!!userInfo?.is_storymaster && (
           <button className="initialize-system-turn-button" onClick={handleInitializeSystemTurn}>
             Initialize System Turn
           </button>
