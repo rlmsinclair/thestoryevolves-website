@@ -69,19 +69,23 @@ const Play: React.FC = () => {
         if (allSubmittedResponse.status === 200 && allSubmittedResponse.data.all_submitted) {
           console.log('All users have submitted their input. The story is evolving!');
           setIsStoryEvolving(true);
+          setTimeout(async () => {
+            try {
+              const response = await axios.post(
+                'https://api1.thestoryevolves.com/api/system_turn',
+                {},
+                { withCredentials: true }
+              );
 
-          // Call the system_turn endpoint
-          const systemTurnResponse = await axios.post(
-            'https://api1.thestoryevolves.com/api/system_turn',
-            {},
-            { withCredentials: true }
-          );
-
-          if (systemTurnResponse.status === 200) {
-            console.log('System turn executed successfully:', systemTurnResponse.data.message);
-          } else {
-            console.error('Error executing system turn:', systemTurnResponse.status);
-          }
+              if (response.status === 200) {
+                console.log('System turn executed successfully:', response.data.message);
+              } else {
+                console.error('Error executing system turn:', response.status);
+              }
+            } catch (error) {
+              console.error('Error:', error);
+            }
+          }, 5000); // Wait for 5 seconds before calling the system_turn endpoint
         } else {
           setIsStoryEvolving(false);
         }
