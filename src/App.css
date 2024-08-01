@@ -48,7 +48,9 @@ body {
   gap: 20px;
 }
 
-.input {
+.input,
+.message-input,
+.lobby-container input[type="text"] {
   width: 100%;
   padding: 12px;
   border: 1px solid #e0e0e0;
@@ -58,7 +60,9 @@ body {
   box-sizing: border-box;
 }
 
-.input:focus {
+.input:focus,
+.message-input:focus,
+.lobby-container input[type="text"]:focus {
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
@@ -172,21 +176,6 @@ body {
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.message-input {
-  flex-grow: 1;
-  padding: 8px;
-  border: 1px solid #e0e0e0;
-  border-radius: var(--border-radius);
-  font-size: 14px;
-  transition: var(--transition);
-}
-
-.message-input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-}
-
 .send-button {
   background-color: var(--primary-color);
   color: var(--light-text-color);
@@ -233,11 +222,6 @@ body {
     padding: 8px;
     box-shadow: none;
     background-color: transparent;
-  }
-
-  .message-input {
-    font-size: 12px;
-    padding: 6px;
   }
 
   .send-button {
@@ -296,23 +280,6 @@ body {
   background-color: #2980b9;
 }
 
-.lobby-container input[type="text"] {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: var(--border-radius);
-  font-size: 16px;
-  transition: var(--transition);
-  box-sizing: border-box;
-  margin-bottom: 20px;
-}
-
-.lobby-container input[type="text"]:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-}
-
 .lobby-container p {
   color: var(--text-color);
   font-size: 16px;
@@ -353,8 +320,10 @@ body {
   }
 
   .lobby-container button,
+  .input,
+  .message-input,
   .lobby-container input[type="text"] {
-    font-size: 14px;
+    font-size: 16px;
     padding: 10px;
   }
 
