@@ -64,12 +64,24 @@ const Play: React.FC = () => {
 
         if (userInfoResponse.status === 200) {
           setCurrentUser(userInfoResponse.data.username);
-          // setUserInfo(userInfoResponse.data);
         }
 
         if (allSubmittedResponse.status === 200 && allSubmittedResponse.data.all_submitted) {
           console.log('All users have submitted their input. The story is evolving!');
           setIsStoryEvolving(true);
+
+          // Call the system_turn endpoint
+          const systemTurnResponse = await axios.post(
+            'https://api1.thestoryevolves.com/api/system_turn',
+            {},
+            { withCredentials: true }
+          );
+
+          if (systemTurnResponse.status === 200) {
+            console.log('System turn executed successfully:', systemTurnResponse.data.message);
+          } else {
+            console.error('Error executing system turn:', systemTurnResponse.status);
+          }
         } else {
           setIsStoryEvolving(false);
         }
