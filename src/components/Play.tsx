@@ -13,11 +13,20 @@ interface UserLocation {
   user_output: string;
 }
 
+// interface UserInfo {
+//   email: string;
+//   username: string;
+//   user_output: string;
+//   is_storymaster: boolean;
+//   story_name: string;
+// }
+
 const Play: React.FC = () => {
   const [message, setMessage] = useState('');
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [allUserLocations, setAllUserLocations] = useState<UserLocation[]>([]);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
+  // const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [isStoryEvolving, setIsStoryEvolving] = useState(false);
 
   const navigate = useNavigate();
@@ -55,6 +64,7 @@ const Play: React.FC = () => {
 
         if (userInfoResponse.status === 200) {
           setCurrentUser(userInfoResponse.data.username);
+          // setUserInfo(userInfoResponse.data);
         }
 
         if (allSubmittedResponse.status === 200 && allSubmittedResponse.data.all_submitted) {
@@ -78,7 +88,7 @@ const Play: React.FC = () => {
   }, [currentUser]);
 
   useEffect(() => {
-    const pollSystemTurn = async () => {
+    const systemTurn = async () => {
       try {
         const response = await axios.post(
           'https://api1.thestoryevolves.com/api/system_turn',
@@ -96,7 +106,7 @@ const Play: React.FC = () => {
       }
     };
 
-    const intervalId = setInterval(pollSystemTurn, 5000); // Poll every 5 seconds
+    const intervalId = setInterval(systemTurn, 5000); // Poll every 5 seconds
 
     return () => {
       clearInterval(intervalId); // Clean up the interval on component unmount
@@ -169,9 +179,7 @@ const Play: React.FC = () => {
         </LoadScript>
       </div>
       <div className="output-container">
-        {isStoryEvolving && (
-          <div className="story-evolving-message">The story is evolving...</div>
-        )}
+        {isStoryEvolving && <p>The story is evolving...</p>}
         {allUserLocations.map((user) => (
           <div key={user.id} className={`user-output ${user.username === currentUser ? 'current-user' : ''}`}>
             <strong>{user.username}:</strong> {user.user_output && <span>{user.user_output}</span>}
