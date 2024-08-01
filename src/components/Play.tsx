@@ -13,31 +13,26 @@ interface UserLocation {
   user_output: string;
 }
 
-interface UserInfo {
-  email: string;
-  username: string;
-  user_output: string;
-  is_storymaster: boolean;
-  story_name: string;
-}
-
 const Play: React.FC = () => {
   const [message, setMessage] = useState('');
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [allUserLocations, setAllUserLocations] = useState<UserLocation[]>([]);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [isStoryEvolving, setIsStoryEvolving] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [locationsResponse, userInfoResponse] = await Promise.all([
+        const [locationsResponse, userInfoResponse, allSubmittedResponse] = await Promise.all([
           axios.get('https://api1.thestoryevolves.com/api/all_user_locations', {
             withCredentials: true,
           }),
           axios.get('https://api1.thestoryevolves.com/api/user_info', {
+            withCredentials: true,
+          }),
+          axios.get('https://api1.thestoryevolves.com/api/check_all_submitted', {
             withCredentials: true,
           }),
         ]);
@@ -60,7 +55,13 @@ const Play: React.FC = () => {
 
         if (userInfoResponse.status === 200) {
           setCurrentUser(userInfoResponse.data.username);
-          setUserInfo(userInfoResponse.data);
+        }
+
+        if (allSubmittedResponse.status === 200 && allSubmittedResponse.data.all_submitted) {
+          console.log('All users have submitted their input. The story is evolving!');
+          setIsStoryEvolving(true);
+        } else {
+          setIsStoryEvolving(false);
         }
       } catch (error) {
         console.error('Error:', error);
@@ -75,6 +76,32 @@ const Play: React.FC = () => {
       clearInterval(intervalId); // Clean up the interval on component unmount
     };
   }, [currentUser]);
+
+  useEffect(() => {
+    const pollSystemTurn = async () => {
+      try {
+        const response = await axios.post(
+          'https://api1.thestoryevolves.com/api/system_turn',
+          {},
+          { withCredentials: true }
+        );
+
+        if (response.status === 200) {
+          console.log('System turn executed successfully:', response.data.message);
+        } else {
+          console.error('Error executing system turn:', response.status);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    const intervalId = setInterval(pollSystemTurn, 5000); // Poll every 5 seconds
+
+    return () => {
+      clearInterval(intervalId); // Clean up the interval on component unmount
+    };
+  }, []);
 
   const handleSendMessage = async () => {
     if (message.trim() !== '') {
@@ -103,24 +130,6 @@ const Play: React.FC = () => {
     }
   };
 
-  const handleInitializeSystemTurn = async () => {
-    try {
-      const response = await axios.post(
-        'https://api1.thestoryevolves.com/api/system_turn',
-        {},
-        { withCredentials: true }
-      );
-
-      if (response.status === 200) {
-        console.log('System turn initialized successfully:', response.data.message);
-      } else {
-        console.error('Error initializing system turn:', response.status);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
   const handleProfileClick = () => {
     navigate('/profile');
   };
@@ -141,11 +150,6 @@ const Play: React.FC = () => {
         <button className="profile-button" onClick={handleProfileClick}>
           Profile
         </button>
-        {!!userInfo?.is_storymaster && (
-          <button className="initialize-system-turn-button" onClick={handleInitializeSystemTurn}>
-            Initialize System Turn
-          </button>
-        )}
       </nav>
       <div className="map-container">
         <LoadScript googleMapsApiKey="AIzaSyA3x0t8fQNXtfCh1CLzqicUkGyd4qWCm4k">
@@ -165,6 +169,9 @@ const Play: React.FC = () => {
         </LoadScript>
       </div>
       <div className="output-container">
+        {isStoryEvolving && (
+          <div className="story-evolving-message">The story is evolving...</div>
+        )}
         {allUserLocations.map((user) => (
           <div key={user.id} className={`user-output ${user.username === currentUser ? 'current-user' : ''}`}>
             <strong>{user.username}:</strong> {user.user_output && <span>{user.user_output}</span>}
