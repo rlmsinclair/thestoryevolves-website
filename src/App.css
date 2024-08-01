@@ -1,3 +1,5 @@
+/* App.css */
+
 :root {
   --primary-color: #3498db;
   --secondary-color: #2ecc71;
@@ -97,9 +99,9 @@ body {
 
 .play-container {
   display: flex;
-  width: 100dvw;
+  width: 100vw;
   flex-direction: column;
-  height: 100dvh;
+  height: 100vh;
   overflow: hidden;
 }
 
@@ -204,7 +206,7 @@ body {
   .play-container {
     display: grid;
     grid-template-rows: auto auto 1fr auto;
-    height: 100dvh;
+    height: 100vh;
   }
 
   .navbar {
@@ -255,6 +257,68 @@ body {
   }
 }
 
+.lobby-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background-color: #ffffff;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.lobby-container h1 {
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: var(--primary-color);
+}
+
+.lobby-container button {
+  background-color: var(--primary-color);
+  color: var(--light-text-color);
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.lobby-container button:hover {
+  background-color: #2980b9;
+}
+
+.lobby-container input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  transition: var(--transition);
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.lobby-container input[type="text"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.lobby-container p {
+  color: var(--text-color);
+  font-size: 16px;
+  margin-top: 20px;
+}
+
 .claw-warning {
   text-align: center;
   font-style: italic;
@@ -275,5 +339,30 @@ body {
   }
   100% {
     transform: scale(1);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .lobby-container {
+    padding: 20px;
+  }
+
+  .lobby-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .lobby-container button,
+  .lobby-container input[type="text"] {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .lobby-container p {
+    font-size: 14px;
+  }
+
+  .claw-warning {
+    font-size: 14px;
   }
 }
