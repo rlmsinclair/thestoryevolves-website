@@ -1,6 +1,6 @@
 // Lobby.tsx
 
-import React, {KeyboardEvent, useState} from 'react';
+import React, { useState, useEffect, KeyboardEvent } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,7 +9,23 @@ const Lobby: React.FC = () => {
   const [isJoiningStory, setIsJoiningStory] = useState(false);
   const [storyName, setStoryName] = useState('');
   const [message, setMessage] = useState('');
+  const [allStories, setAllStories] = useState<string[]>([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchAllStories();
+  }, []);
+
+  const fetchAllStories = async () => {
+    try {
+      const response = await axios.get('https://api1.thestoryevolves.com/api/get_all_stories', { withCredentials: true });
+      if (response.status === 200) {
+        setAllStories(response.data.stories);
+      }
+    } catch (error) {
+      console.error('Error fetching stories:', error);
+    }
+  };
 
   const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -56,11 +72,23 @@ const Lobby: React.FC = () => {
         <>
           <button onClick={handleCreateStory}>Create a Story</button>
           <button onClick={handleJoinStory}>Join a Story</button>
+          <h2>Available Stories:</h2>
+          <ul className="story-list">
+            {allStories.map((story, index) => (
+              <li key={index} onClick={() => setStoryName(story)}>{story}</li>
+            ))}
+          </ul>
         </>
       )}
       {(isCreatingStory || isJoiningStory) && (
         <>
-          <input type="text" value={storyName} onKeyPress={handleKeyPress} onChange={(e) => setStoryName(e.target.value)} placeholder="Enter story name" />
+          <input
+            type="text"
+            value={storyName}
+            onKeyPress={handleKeyPress}
+            onChange={(e) => setStoryName(e.target.value)}
+            placeholder="Enter story name"
+          />
           <button onClick={handleStoryNameSubmit}>Submit</button>
         </>
       )}
