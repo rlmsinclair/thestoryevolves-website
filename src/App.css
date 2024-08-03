@@ -410,6 +410,7 @@ body {
 .how-to-play ol {
   padding-left: 20px;
   margin-bottom: 0;
+  text-align: left;
 }
 
 .how-to-play li {
