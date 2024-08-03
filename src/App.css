@@ -421,11 +421,3 @@ body {
 .play-container {
   padding-top: 0;
 }
-
-/* Adjust the app container to have some side padding */
-.app {
-  padding: 0 20px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
