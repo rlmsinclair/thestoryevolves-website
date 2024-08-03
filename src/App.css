@@ -366,3 +366,21 @@ body {
   color: #721c24;
   border: 1px solid #f5c6cb;
 }
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #f8f9fa;
+  color: #6c757d;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 0.8rem;
+  border-top: 1px solid #dee2e6;
+}
+
+/* Adjust main content to not be hidden by footer */
+.container, .lobby-container, .profile-container {
+  padding-bottom: 40px; /* Adjust this value based on your footer height */
+}

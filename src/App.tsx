@@ -6,6 +6,7 @@ import RegisterLogin from './components/RegisterLogin';
 import Play from './components/Play';
 import Lobby from './components/Lobby';
 import Profile from './components/Profile';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/play" element={<Play />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
+        <Footer />
       </div>
     </Router>
   );
