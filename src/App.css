@@ -411,6 +411,10 @@ body {
 /* Adjust main content to accommodate How to Play section */
 .container, .lobby-container, .profile-container {
   padding-top: 20px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 /* For the Play screen, we don't need to adjust padding */
@@ -423,13 +427,4 @@ body {
   padding: 0 20px;
   max-width: 800px;
   margin: 0 auto;
-}
-
-.register-login-container,
-.lobby-inner-container,
-.profile-inner-container {
-  background-color: #ffffff;
-  border-radius: 5px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
