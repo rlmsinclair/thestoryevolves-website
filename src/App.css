@@ -403,6 +403,7 @@ body {
 }
 
 .how-to-play h3 {
+  text-align: center;
   margin-top: 0;
   color: #495057;
 }
