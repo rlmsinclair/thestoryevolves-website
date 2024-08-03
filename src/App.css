@@ -384,3 +384,43 @@ body {
 .container, .lobby-container, .profile-container {
   padding-bottom: 40px; /* Adjust this value based on your footer height */
 }
+
+.how-to-play {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.how-to-play h3 {
+  margin-top: 0;
+  color: #495057;
+}
+
+.how-to-play ol {
+  padding-left: 20px;
+  margin-bottom: 0;
+}
+
+.how-to-play li {
+  margin-bottom: 5px;
+}
+
+/* Adjust main content to accommodate How to Play section */
+.container, .lobby-container, .profile-container {
+  padding-top: 20px;
+}
+
+/* For the Play screen, we don't need to adjust padding */
+.play-container {
+  padding-top: 0;
+}
+
+/* Adjust the app container to have some side padding */
+.app {
+  padding: 0 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
