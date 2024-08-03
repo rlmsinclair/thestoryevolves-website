@@ -367,19 +367,6 @@ body {
   border: 1px solid #f5c6cb;
 }
 
-.footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: #f8f9fa;
-  color: #6c757d;
-  text-align: center;
-  padding: 10px 0;
-  font-size: 0.8rem;
-  border-top: 1px solid #dee2e6;
-}
-
 /* Adjust main content to not be hidden by footer */
 .container, .lobby-container, .profile-container {
   padding-bottom: 40px; /* Adjust this value based on your footer height */
@@ -427,4 +414,51 @@ body {
   padding: 0 20px;
   max-width: 800px;
   margin: 0 auto;
+}
+
+.how-to-play {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+  font-size: 0.9rem;
+}
+
+.how-to-play h3 {
+  margin-top: 0;
+  color: #343a40;
+}
+
+.how-to-play ol {
+  padding-left: 20px;
+}
+
+.how-to-play li {
+  margin-bottom: 10px;
+}
+
+/* Adjust main content to not be hidden by footer and how-to-play */
+.container, .lobby-container, .profile-container {
+  padding-bottom: 300px; /* Increased to accommodate How to Play section */
+}
+
+/* For the Play screen, we don't need to adjust padding */
+.play-container {
+  padding-bottom: 0;
+}
+
+/* Adjust footer position */
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #f8f9fa;
+  color: #6c757d;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 0.8rem;
+  border-top: 1px solid #dee2e6;
 }
