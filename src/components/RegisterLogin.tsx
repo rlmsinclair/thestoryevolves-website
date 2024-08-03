@@ -88,72 +88,86 @@ const RegisterLogin: React.FC = () => {
   };
 
   return (
-    <div className="container">
-      <h1 className="title">Register or Login</h1>
-      {!emailSubmitted ? (
-        <form onSubmit={handleEmailSubmit} className="form">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="input"
-          />
-          <button type="submit" className="button">
-            Submit
-          </button>
-        </form>
-      ) : (
-        <>
-          {isLoggedIn ? (
-            <p className="message success">{message}</p>
-          ) : isRegistered ? (
-            <form onSubmit={handleLogin} className="form">
+      <div className="container">
+        <h1 className="title">Register or Login</h1>
+        {!emailSubmitted ? (
+            <form onSubmit={handleEmailSubmit} className="form">
               <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="input"
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="input"
               />
               <button type="submit" className="button">
-                Login
+                Submit
               </button>
             </form>
-          ) : (
-            <form onSubmit={handleRegistration} className="form">
-              <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                className="input"
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="input"
-              />
-              <button type="submit" className="button">
-                Register
-              </button>
-            </form>
-          )}
-        </>
-      )}
-      {!isLoggedIn && message && (
-        <p className={`message ${message.includes('success') ? 'success' : 'error'}`}>
-          {message}
-        </p>
-      )}
-      <p className="claw-warning">Watch out for... The Claw</p>
-    </div>
+        ) : (
+            <>
+              {isLoggedIn ? (
+                  <p className="message success">{message}</p>
+              ) : isRegistered ? (
+                  <form onSubmit={handleLogin} className="form">
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        className="input"
+                    />
+                    <button type="submit" className="button">
+                      Login
+                    </button>
+                  </form>
+              ) : (
+                  <form onSubmit={handleRegistration} className="form">
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                        className="input"
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        className="input"
+                    />
+                    <button type="submit" className="button">
+                      Register
+                    </button>
+                  </form>
+              )}
+            </>
+        )}
+        {!isLoggedIn && message && (
+            <p className={`message ${message.includes('success') ? 'success' : 'error'}`}>
+              {message}
+            </p>
+        )}
+        <p className="claw-warning">Watch out for... The Claw</p>
+        <div className="how-to-play">
+          <h3>How to Play:</h3>
+          <ol>
+            <li>Register with your email, then create a username and password.</li>
+            <li>Create or join a story.</li>
+            <li>You will spawn in central London.</li>
+            <li>
+              Each turn lasts 24 hours. Enter what you would like to do in these 24 hours.
+              You can mention and interact with other players by username.
+              For example "I give Robbie a high five." or "I walk north as far as I can."
+            </li>
+            <li>The story will evolve only after everyone has made their turn.</li>
+          </ol>
+        </div>
+      </div>
   );
 };
 
