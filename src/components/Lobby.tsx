@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 const Lobby: React.FC = () => {
   const [isCreatingStory, setIsCreatingStory] = useState(false);
-  const [isJoiningStory, setIsJoiningStory] = useState(false);
   const [storyName, setStoryName] = useState('');
   const [message, setMessage] = useState('');
   const [allStories, setAllStories] = useState<string[]>([]);
@@ -42,57 +41,53 @@ const Lobby: React.FC = () => {
     }
   };
 
-  const handleJoinStory = () => {
-    setIsJoiningStory(true);
-  };
-
   const handleStoryNameSubmit = async () => {
     try {
-      if (isCreatingStory) {
-        await axios.post('https://api1.thestoryevolves.com/api/update_story_name', { story_name: storyName }, { withCredentials: true });
-        navigate('/play');
-      } else if (isJoiningStory) {
-        const response = await axios.post('https://api1.thestoryevolves.com/api/check_story_name', { story_name: storyName }, { withCredentials: true });
-        if (response.data.exists) {
-          await axios.post('https://api1.thestoryevolves.com/api/update_story_name', { story_name: storyName }, { withCredentials: true });
-          navigate('/play');
-        } else {
-          setMessage('Invalid story name. Please enter a valid story name.');
-        }
-      }
+      await axios.post('https://api1.thestoryevolves.com/api/update_story_name', { story_name: storyName }, { withCredentials: true });
+      navigate('/play');
     } catch (error) {
       console.error('Error:', error);
+      setMessage('An error occurred. Please try again.');
+    }
+  };
+
+  const handleJoinStory = async (selectedStoryName: string) => {
+    try {
+      await axios.post('https://api1.thestoryevolves.com/api/update_story_name', { story_name: selectedStoryName }, { withCredentials: true });
+      navigate('/play');
+    } catch (error) {
+      console.error('Error:', error);
+      setMessage('An error occurred while joining the story. Please try again.');
     }
   };
 
   return (
     <div className="lobby-container">
       <h1>Lobby</h1>
-      {!isCreatingStory && !isJoiningStory && (
+      {!isCreatingStory && (
         <>
           <button onClick={handleCreateStory}>Create a Story</button>
-          <button onClick={handleJoinStory}>Join a Story</button>
           <h2>Available Stories:</h2>
           <ul className="story-list">
             {allStories.map((story, index) => (
-              <li key={index} onClick={() => setStoryName(story)}>{story}</li>
+              <li key={index} onClick={() => handleJoinStory(story)}>{story}</li>
             ))}
           </ul>
         </>
       )}
-      {(isCreatingStory || isJoiningStory) && (
+      {isCreatingStory && (
         <>
           <input
             type="text"
             value={storyName}
             onKeyPress={handleKeyPress}
             onChange={(e) => setStoryName(e.target.value)}
-            placeholder="Enter story name"
+            placeholder="Enter new story name"
           />
-          <button onClick={handleStoryNameSubmit}>Submit</button>
+          <button onClick={handleStoryNameSubmit}>Create Story</button>
         </>
       )}
-      {message && <p>{message}</p>}
+      {message && <p className="message">{message}</p>}
     </div>
   );
 };
