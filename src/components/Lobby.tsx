@@ -62,7 +62,7 @@ const Lobby: React.FC = () => {
   };
 
   return (
-    <div className="lobby-container">
+    <div className="lobby-inner-container">
       <h1>Lobby</h1>
       {!isCreatingStory && (
         <>

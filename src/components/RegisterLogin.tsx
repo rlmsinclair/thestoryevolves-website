@@ -88,7 +88,7 @@ const RegisterLogin: React.FC = () => {
   };
 
   return (
-    <div className="container">
+    <div className="register-login-container">
       <h1 className="title">Register or Login</h1>
       {!emailSubmitted ? (
         <form onSubmit={handleEmailSubmit} className="form">
