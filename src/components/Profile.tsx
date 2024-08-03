@@ -33,7 +33,7 @@ const Profile: React.FC = () => {
   }, []);
 
   return (
-    <div className="profile-inner-container">
+    <div className="profile-container">
       <h2>Profile</h2>
       {userInfo ? (
         <div>
