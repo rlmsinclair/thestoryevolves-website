@@ -222,11 +222,19 @@ body {
     padding: 8px;
     box-shadow: none;
     background-color: transparent;
+    height: 60px; /* Add a fixed height to the input container */
+    box-sizing: border-box; /* Include padding in the height calculation */
+  }
+
+  .message-input {
+    flex-grow: 1; /* Allow the input to grow and fill the available space */
+    margin-right: 8px; /* Add some spacing between the input and button */
   }
 
   .send-button {
     font-size: 12px;
     padding: 6px 12px;
+    white-space: nowrap; /* Prevent the button text from wrapping */
   }
 
   .output-container {
