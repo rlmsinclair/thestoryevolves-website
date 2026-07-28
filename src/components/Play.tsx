@@ -178,7 +178,7 @@ const Play: React.FC = () => {
         </button>
       </nav>
       <div className="map-container">
-        <LoadScript googleMapsApiKey="AIzaSyA3x0t8fQNXtfCh1CLzqicUkGyd4qWCm4k">
+        <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
             center={userLocation || defaultCenter}

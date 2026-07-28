@@ -1,30 +1,36 @@
-# React + TypeScript + Vite
+# The Story Evolves — Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend for **The Story Evolves**, a turn-based collaborative storytelling game played on a real-world map. Players join a shared story, submit what they want to do each turn, and Claude resolves everyone's actions — advancing the narrative and moving each player's position on the map.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Join or create a named story lobby with a starting location
+- Submit your action each turn and see Claude's narrative outcome
+- Live map (Google Maps) showing every player's position as the story unfolds
+- Turn syncing — the round resolves once all players have submitted
 
-## Expanding the ESLint configuration
+## Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **React + TypeScript** (Vite)
+- **Google Maps** via `@react-google-maps/api`
+- Talks to the [thestoryevolves-api](https://github.com/rlmsinclair/thestoryevolves-api) Flask backend
 
-- Configure the top-level `parserOptions` property like this:
+## Setup
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```bash
+npm install
+cp .env.example .env   # then add your Google Maps API key
+npm run dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Configuration
+
+Config is read from a `.env` file (Vite `import.meta.env`); `.env` is gitignored and must never be committed.
+
+| Variable | Description |
+|---|---|
+| `VITE_GOOGLE_MAPS_API_KEY` | Google Maps JavaScript API key. Restrict it by HTTP referrer in the Google Cloud Console — Vite inlines `VITE_*` values into the client bundle, so the key is visible to anyone who loads the site. |
+
+## Related
+
+- [thestoryevolves-api](https://github.com/rlmsinclair/thestoryevolves-api) — backend
